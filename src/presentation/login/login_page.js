@@ -1,116 +1,31 @@
-// import 'package:flutter/material.dart';
-// import 'package:firebase_auth/firebase_auth.dart';
+// src/Login.js
+import React, { useState } from 'react';
+import firebase from '../../firebase';
 
-// class LoginPage extends StatefulWidget {
-//   @override
-//   _LoginPageState createState() => _LoginPageState();
-// }
+export const LoginPage = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
-// class _LoginPageState extends State<LoginPage> {
-//   final FirebaseAuth _auth = FirebaseAuth.instance;
-//   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-//   TextEditingController _emailController = TextEditingController();
-//   TextEditingController _passwordController = TextEditingController();
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    try {
+      await firebase.auth().signInWithEmailAndPassword(email, password);
+      alert('ログイン成功');
+    } catch (error) {
+      alert('ログイン失敗: ' + error.message);
+    }
+  };
 
-//   // これ、ログイン状態だと、ホーム画面に戻す
-//   checkAuthentication() async {
-//     _auth.authStateChanges().listen((user) {
-//       if (user != null) {
-//         Navigator.pop(context);
-//       }
-//     });
-//   }
+  return (
+    <div>
+      <h1>Login</h1>
+      <form onSubmit={handleLogin}>
+        <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
+        <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
+        <button type="submit">ログイン</button>
+      </form>
+    </div>
+  );
+};
 
-//   @override
-//   void initState() {
-//     super.initState();
-//     this.checkAuthentication();
-//   }
-
-//   login() async {
-//     // if (_formKey.currentState.validate()) {
-//     //   _formKey.currentState.save();
-//     try {
-//       UserCredential user = await _auth.signInWithEmailAndPassword(
-//           email: _emailController.text, password: _passwordController.text);
-//     } catch (e) {
-//       showError(e.toString());
-//     }
-//     // }
-//   }
-
-//   showError(String errorMessage) {
-//     showDialog(
-//         context: context,
-//         builder: (BuildContext context) {
-//           return AlertDialog(
-//             title: Text("Error"),
-//             content: Text(errorMessage),
-//             actions: <Widget>[
-//               ElevatedButton(
-//                 child: Text("OK"),
-//                 onPressed: () {
-//                   Navigator.of(context).pop();
-//                 },
-//               )
-//             ],
-//           );
-//         });
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         backgroundColor: Colors.deepOrangeAccent,
-//         title: Text(
-//           "ログイン",
-//           style: TextStyle(color: Colors.white, fontSize: 25),
-//         ),
-//       ),
-//       body: SingleChildScrollView(
-//         child: Container(
-//           child: Column(
-//             children: <Widget>[
-//               SizedBox(height: 40.0),
-//               Container(
-//                 padding: EdgeInsets.all(32),
-//                 child: Form(
-//                   key: _formKey,
-//                   child: Column(
-//                     children: <Widget>[
-//                       TextFormField(
-//                         controller: _emailController,
-//                         keyboardType: TextInputType.emailAddress,
-//                         decoration: InputDecoration(labelText: "Email"),
-//                       ),
-//                       TextFormField(
-//                         controller: _passwordController,
-//                         obscureText: true,
-//                         decoration: InputDecoration(labelText: "Password"),
-//                       ),
-//                       SizedBox(height: 20.0),
-//                       ElevatedButton(
-//                         style: ButtonStyle(
-//                           minimumSize:
-//                               MaterialStateProperty.all<Size>(Size(150, 40)),
-//                           backgroundColor: MaterialStateProperty.all<Color>(
-//                               Color.fromARGB(200, 50, 205, 50)),
-//                         ),
-//                         onPressed: login,
-//                         child: Text(
-//                           "Login",
-//                           style: TextStyle(color: Colors.white, fontSize: 20.0),
-//                         ),
-//                       )
-//                     ],
-//                   ),
-//                 ),
-//               )
-//             ],
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
+export default LoginPage;
