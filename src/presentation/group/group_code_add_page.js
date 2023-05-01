@@ -1,95 +1,54 @@
-// import 'package:firebase_auth/firebase_auth.dart';
-// import 'package:flutter/material.dart';
+import React, { useState,useEffect } from "react";
+import { insertGroupMemberList } from '../../api/group_member_list_api_client';
+import { auth } from '../../firebase';
+import { onAuthStateChanged } from "firebase/auth";
 
-// import '../../api/api_client.dart';
+const GroupCodeAddPage = () => {
+  const [code, setCode] = useState("");
+  const [user, setUser] = useState(null);
 
-// class GroupCodeAddPage extends StatefulWidget {
-//   const GroupCodeAddPage({super.key});
-//   @override
-//   State<GroupCodeAddPage> createState() => _GroupCodeAddPageState();
-// }
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUser(user);
+      } else {
+        setUser(null);
+      }
+    });
+    return unsubscribe;
+  }, []);
 
-// class _GroupCodeAddPageState extends State<GroupCodeAddPage> {
-//   TextEditingController _codeController = TextEditingController();
-//   String genaretedCode = "";
-//   final FirebaseAuth _auth = FirebaseAuth.instance;
-//   List<Map<String, dynamic>>? items;
-//   List<Map<String, dynamic>>? allItems;
-//   List<String> menuItems = [];
-//   Future<void>? _initDataFuture;
-//   // これ、ログイン状態だと、ホーム画面に戻す
-//   checkAuthentication() async {
-//     _auth.authStateChanges().listen((user) {
-//       if (user == null) {
-//         Navigator.pop(context);
-//       }
-//     });
-//   }
+  const handleJoinGroup = () => {
+    // コードを使ってチームに参加する処理を実装してください
+    // Insert group member list
+    if(code != ""){
+        insertGroupMemberList(user.uid, "", code, user.email)
+        .then((data) => {
+            console.log("Group member list data inserted:", data);
+        })
+        .catch((error) => {
+            console.error("Error inserting group member list:", error);
+            alert("コードが存在しません")
+        });
+    }else{
+        alert("コードを入力してください")
+    }
 
-//   @override
-//   void initState() {
-//     super.initState();
-//     this.checkAuthentication();
-//     _initDataFuture = initData();
-//   }
+  };
 
-//   Future<void> initData() async {
-//     await checkAuthentication();
-//   }
+  return (
+    <div>
+      <h1>コード追加</h1>
+      <p>もらったコードを入力してください:</p>
+      <input
+        type="text"
+        value={code}
+        onChange={(e) => setCode(e.target.value)}
+        placeholder="コードを入力"
+      />
+      <button onClick={handleJoinGroup}>チームに参加する</button>
+    </div>
+  );
+};
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//         height: 600,
-//         child: Container(
-//           child: Column(
-//             children: [
-//               Padding(
-//                 padding: const EdgeInsets.fromLTRB(0, 30, 0, 30),
-//                 child: Text("もらったコードを入力してください"),
-//               ),
-//               Padding(
-//                   padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-//                   child: TextFormField(
-//                     maxLines: null,
-//                     decoration: InputDecoration(
-//                       contentPadding:
-//                           EdgeInsets.symmetric(horizontal: 10.0, vertical: 0.0),
-//                       border: OutlineInputBorder(),
-//                     ),
-//                     controller: _codeController,
-//                   )),
-//               genaretedCode != ""
-//                   ? Padding(
-//                       padding: const EdgeInsets.fromLTRB(0, 30, 0, 30),
-//                       child: SelectableText(genaretedCode),
-//                     )
-//                   : Container(),
-//               Padding(
-//                   padding: EdgeInsets.fromLTRB(20, 20, 0, 0),
-//                   child: ElevatedButton(
-//                     style:
-//                         ElevatedButton.styleFrom(backgroundColor: Colors.green),
-//                     child: Text(
-//                       "チームに参加する",
-//                       style: TextStyle(fontSize: 15, color: Colors.white),
-//                     ),
-//                     onPressed: () async {
-//                       if (_codeController.text == "") {
-//                         setState(() {
-//                           genaretedCode = "コードは必須です";
-//                         });
-//                       } else {
-//                         await group_member_list_input_api(
-//                             _auth.currentUser!.uid.toString(),
-//                             "",
-//                             _codeController.text,
-//                             _auth.currentUser!.email.toString());
-//                       }
-//                     },
-//                   )),
-//             ],
-//           ),
-//         ));
-//   }
-// }
+export default GroupCodeAddPage;

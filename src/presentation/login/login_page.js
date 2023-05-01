@@ -1,16 +1,19 @@
 // src/Login.js
 import React, { useState } from 'react';
-import firebase from '../../firebase';
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from '../../firebase';
+import { useNavigate } from "react-router-dom"
 
 export const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
+  const navigate = useNavigate()
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      await firebase.auth().signInWithEmailAndPassword(email, password);
-      alert('ログイン成功');
+      signInWithEmailAndPassword(auth, email, password);
+        alert('ログイン成功');
+        navigate("/")
     } catch (error) {
       alert('ログイン失敗: ' + error.message);
     }

@@ -1,73 +1,23 @@
-// import 'package:firebase_auth/firebase_auth.dart';
-// import 'package:flutter/material.dart';
+import React, { useState, useEffect } from "react";
 
-// import '../../api/api_client.dart';
+const GroupMemberPage = () => {
+  const [members, setMembers] = useState([]);
 
-// class GroupMemberPage extends StatefulWidget {
-//   const GroupMemberPage({super.key, required this.code});
-//   final String code;
-//   @override
-//   State<GroupMemberPage> createState() => _GroupMemberPageState();
-// }
+  useEffect(() => {
+    // DBから取得したメンバー名の一覧を設定してください
+    // setMembers(取得したデータ);
+  }, []);
 
-// class _GroupMemberPageState extends State<GroupMemberPage> {
-//   final FirebaseAuth _auth = FirebaseAuth.instance;
-//   List<Map<String, dynamic>>? items;
-//   List<Map<String, dynamic>>? allItems;
-//   List<String> menuItems = [];
-//   Future<void>? _initDataFuture;
-//   // これ、ログイン状態だと、ホーム画面に戻す
-//   checkAuthentication() async {
-//     _auth.authStateChanges().listen((user) {
-//       if (user == null) {
-//         Navigator.pop(context);
-//       }
-//     });
-//   }
+  return (
+    <div>
+      <h1>チームメンバー</h1>
+      <ul>
+        {members.map((member) => (
+            <li key={member.id}>{member.name}</li>
+        ))}
+      </ul>
+    </div>
+  );
+};
 
-//   @override
-//   void initState() {
-//     super.initState();
-//     this.checkAuthentication();
-//     _initDataFuture = initData();
-//   }
-
-//   Future<void> initData() async {
-//     await checkAuthentication();
-//     // DBから空雨傘一覧データを取得
-//     // final value = await s_r_u_list_api(_auth.currentUser!.uid.toString());
-//     final value = await get_group_member_list(widget.code);
-//     setState(() {
-//       items = value
-//           .cast<Map<String, dynamic>>()
-//           .map((item) => {
-//                 ...item,
-//               })
-//           .toList();
-//     });
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//         // height: 300,
-//         child: ListView.builder(
-//             itemCount: items != null ? items!.length : 0,
-//             itemBuilder: (context, index) {
-//               return Padding(
-//                 padding: const EdgeInsets.all(8.0),
-//                 child: Card(
-//                   margin: EdgeInsets.all(8.0),
-//                   child: Row(
-//                     children: [
-//                       Text(
-//                         items![index]["nickname"]!,
-//                         style: TextStyle(fontSize: 20),
-//                       ),
-//                     ],
-//                   ),
-//                 ),
-//               );
-//             }));
-//   }
-// }
+export default GroupMemberPage;
