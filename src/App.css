@@ -50,3 +50,8 @@
   overflow: auto;
   resize: none;
 }
+
+.parent-div {
+  display: flex;
+  flex-direction: column;
+}

@@ -27,7 +27,8 @@ const GroupCodePublishPage = () => {
       // TODO:dummyUserIdとdummyCodeを実装流う
       const length = 10; // 生成する文字列の長さ
       const characters =
-        "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"; // 使用する文字列の候補
+        // "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"; // 使用する文字列の候補
+        user.uid
       let result = "";
       for (let i = 0; i < length; i++) {
         result += characters.charAt(

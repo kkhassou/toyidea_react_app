@@ -19,8 +19,9 @@ const SimpleListPage = () => {
       if (user) {
         setUser(user);
         getSkyRainUmbrellaList(
-          "ec69W4CxTagT47m2qKTLy0HFG3p2"
+          // "ec69W4CxTagT47m2qKTLy0HFG3p2"
           // user.uid
+          user.email
         )
           .then((data) => {
             setList(data);

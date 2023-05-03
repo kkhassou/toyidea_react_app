@@ -43,6 +43,7 @@ const SimpleInputPage = () => {
     try {
       const result = await insertSkyRainUmbrella(
         user.uid,
+        user.email,
         inputs.trigger,
         inputs.sky,
         inputs.rain,
@@ -171,7 +172,7 @@ const SimpleInputPage = () => {
           onChange={handleChange}
           multiline
           inputProps={{
-            maxLength: 30,
+            maxLength: 300,
             style: { whiteSpace: "pre-wrap", wordWrap: "break-word" },
             wrap: "soft",
           }}

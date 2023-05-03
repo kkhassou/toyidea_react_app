@@ -10,6 +10,7 @@ import GroupListPage from "./presentation/group/group_list_page";
 import GroupMemberPage from "./presentation/group/group_member_page";
 import SimpleInputPage from "./presentation/tr_sk_ra_um/simple_input/simple_input_page";
 import SimpleListPage from "./presentation/tr_sk_ra_um/simple_list/simple_list_page";
+import SimpleFirstStepPage from "./presentation/5w1h_inovation/simple/simple_first_step_page";
 function App() {
   return (
     <Router>
@@ -23,6 +24,10 @@ function App() {
         <Route path="/group/member" element={<GroupMemberPage />} />
         <Route path="/simple_input" element={<SimpleInputPage />} />
         <Route path="/simple_list" element={<SimpleListPage />} />
+        <Route
+          path="5w1h_inovation/simple/first_step_page"
+          element={<SimpleFirstStepPage />}
+        />
       </Routes>
     </Router>
   );
