@@ -4,12 +4,15 @@ import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "../../../firebase";
 import { Select, MenuItem, Typography } from "@mui/material";
 import FormControl from "@mui/material/FormControl";
-
+import { Link, useNavigate } from "react-router-dom";
 const SimpleListPage = () => {
   const [list, setList] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [filter, setFilter] = useState("all");
+  const [filterItem, setFilterItem] = useState("trigger");
+  const [contentFilter, setContentFilter] = useState("all");
   const [user, setUser] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -33,30 +36,66 @@ const SimpleListPage = () => {
     return unsubscribe;
   }, []);
 
+  useEffect(() => {
+    let filtered = list;
+
+    if (filter !== "all") {
+      filtered = filtered.map((item) => {
+        const newItem = { ...item };
+        for (const key in newItem) {
+          if (key !== "id" && key !== filter) {
+            newItem[key] = "";
+          }
+        }
+        return newItem;
+      });
+    }
+
+    if (contentFilter !== "" && contentFilter !== "all") {
+      filtered = filtered.filter((item) => {
+        for (const key in item) {
+          if (key !== "id" && item[key] === contentFilter) {
+            return true;
+          }
+        }
+        return false;
+      });
+    }
+
+    setFilteredData(filtered);
+  }, [filter, contentFilter, list]);
+
   const handleFilterChange = (event) => {
     const newFilter = event.target.value;
     setFilter(newFilter);
+  };
 
-    if (newFilter === "all") {
-      setFilteredData(list);
-    } else {
-      //   setFilteredData(list.filter((item) => item[newFilter] !== ""));
-      setFilteredData(
-        list.map((item) => {
-          const newItem = { ...item };
-          for (const key in newItem) {
-            if (key !== "id" && key !== newFilter) {
-              newItem[key] = "";
-            }
-          }
-          return newItem;
-        })
-      );
-    }
+  const handleFilterItemChange = (event) => {
+    const newFilterItem = event.target.value;
+    setFilterItem(newFilterItem);
+    setContentFilter("");
+  };
+
+  const handleContentFilterChange = (event) => {
+    const newContentFilter = event.target.value;
+    setContentFilter(newContentFilter);
   };
 
   const handleReconsider = (id) => {
     // 再考するボタンが押された時の処理を記述
+    const selectedItem = list.find((item) => item.id === id);
+    navigate("/simple_input", { state: { item: selectedItem } });
+  };
+
+  const getContentOptions = () => {
+    return list
+      .map((item) => item[filterItem])
+      .filter((value, index, self) => self.indexOf(value) === index)
+      .map((value) => (
+        <MenuItem value={value} style={{ fontSize: "20px" }}>
+          {value}
+        </MenuItem>
+      ));
   };
 
   return (
@@ -110,6 +149,42 @@ const SimpleListPage = () => {
           >
             傘のみ
           </MenuItem>
+        </Select>
+      </FormControl>
+      <Typography variant="h6">フィルタ項目:</Typography>
+      <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
+        <Select
+          value={filterItem}
+          onChange={handleFilterItemChange}
+          variant="outlined"
+          style={{ fontSize: "20px", height: "40px" }}
+        >
+          <MenuItem value="trigger" style={{ fontSize: "20px" }}>
+            起
+          </MenuItem>
+          <MenuItem value="sky" style={{ fontSize: "20px" }}>
+            空
+          </MenuItem>
+          <MenuItem value="rain" style={{ fontSize: "20px" }}>
+            雨
+          </MenuItem>
+          <MenuItem value="umbrella" style={{ fontSize: "20px" }}>
+            傘
+          </MenuItem>
+        </Select>
+      </FormControl>
+      <Typography variant="h6">内容フィルタ:</Typography>
+      <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
+        <Select
+          value={contentFilter}
+          onChange={handleContentFilterChange}
+          variant="outlined"
+          style={{ fontSize: "20px", height: "40px" }}
+        >
+          <MenuItem value="all" style={{ fontSize: "20px" }}>
+            全て
+          </MenuItem>
+          {getContentOptions()}
         </Select>
       </FormControl>
       <div>

@@ -40,3 +40,13 @@
 .custom-select {
   font-size: 40px;
 }
+
+.textbox {
+  /* width: 100%;
+  max-width: 300px; /* テキストボックスの最大幅を指定 */
+  /* overflow-wrap: break-word; 30文字を超えた場合に折り返す */
+  width: 100%;
+  height: 3em;
+  overflow: auto;
+  resize: none;
+}
