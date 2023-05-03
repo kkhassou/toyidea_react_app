@@ -1,11 +1,11 @@
 import axios from "axios";
-import UrlConstant from "../constants/url_constant"
+import UrlConstant from "../constants/url_constant";
 
 const API_URL = UrlConstant.apiUrl; // ここにAPIのベースURLを設定してください
 
 export async function getSkyRainUmbrellaList(userId) {
   try {
-    const response = await axios.get(`${API_URL}/skyRainUmbrellaList`, {
+    const response = await axios.get(API_URL + `skyRainUmbrellaList`, {
       headers: {
         userid: userId,
       },
@@ -17,9 +17,15 @@ export async function getSkyRainUmbrellaList(userId) {
   }
 }
 
-export async function insertSkyRainUmbrella(userId, trigger, sky, rain, umbrella) {
+export async function insertSkyRainUmbrella(
+  userId,
+  trigger,
+  sky,
+  rain,
+  umbrella
+) {
   try {
-    const response = await axios.post(`${API_URL}/skyRainUmbrellaInput`, {
+    const response = await axios.post(API_URL + `skyRainUmbrellaInput`, {
       userId: userId,
       trigger: trigger,
       sky: sky,

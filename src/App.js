@@ -8,7 +8,8 @@ import GroupCodeAddPage from './presentation/group/group_code_add_page';
 import GroupCodePublishPage from './presentation/group/group_code_publish_page';
 import GroupListPage from './presentation/group/group_list_page';
 import GroupMemberPage from './presentation/group/group_member_page';
-
+import SimpleInputPage from './presentation/tr_sk_ra_um/simple_input/simple_input_page';
+import SimpleListPage from './presentation/tr_sk_ra_um/simple_list/simple_list_page';
 function App() {
   return (
     <Router>
@@ -20,6 +21,8 @@ function App() {
         <Route path="/group/code-publish" element={<GroupCodePublishPage />} />
         <Route path="/group/list" element={<GroupListPage />} />
         <Route path="/group/member" element={<GroupMemberPage />} />
+        <Route path="/simple_input" element={<SimpleInputPage />} />
+        <Route path="/simple_list" element={<SimpleListPage />} />
       </Routes>
     </Router>
   );

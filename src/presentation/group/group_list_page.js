@@ -1,36 +1,36 @@
 import React, { useState, useEffect } from "react";
-import { getBelongGroupList } from '../../api/group_list_api_client';
-import { auth } from '../../firebase';
+import { getBelongGroupList } from "../../api/group_list_api_client";
+import { auth } from "../../firebase";
 import { onAuthStateChanged } from "firebase/auth";
+import { Link, useNavigate } from "react-router-dom";
 
 const GroupListPage = () => {
   const [groupList, setGroupList] = useState([]);
   const [user, setUser] = useState(null);
-
+  const navigate = useNavigate();
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-        if (user) {
-          setUser(user);
+      if (user) {
+        setUser(user);
         //   alert(user.uid)
-          // TODO:uidではなく、emailで検索しなくてはいけない
-          getBelongGroupList(user.email)
+        // TODO:uidではなく、emailで検索しなくてはいけない
+        getBelongGroupList(user.email)
           .then((data) => {
             setGroupList(data);
-            console.log("kake data")
-            console.log(data)
+            console.log("kake data");
+            console.log(data);
           })
           .catch((error) => {
             console.error("Error fetching group list:", error);
           });
         return unsubscribe;
-        } else {
-          setUser(null);
-        }
+      } else {
+        setUser(null);
+      }
     });
     // DBから取得したチーム名とチームコードの一覧を設定してください
     // setGroups(取得したデータ);
     // Fetch group list using the user ID
-
   }, []);
 
   return (
@@ -47,7 +47,13 @@ const GroupListPage = () => {
           {groupList.map((group) => (
             <tr key={group.id}>
               <td>{group.name}</td>
-              <td>{group.code}</td>
+              <button
+                onClick={() =>
+                  navigate("/group/member", { state: { code: group.code } })
+                }
+              >
+                {group.code}
+              </button>
             </tr>
           ))}
         </tbody>

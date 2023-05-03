@@ -1,6 +1,6 @@
-import React, { useState,useEffect } from "react";
-import { insertGroupMemberList } from '../../api/group_member_list_api_client';
-import { auth } from '../../firebase';
+import React, { useState, useEffect } from "react";
+import { insertGroupMemberList } from "../../api/group_member_list_api_client";
+import { auth } from "../../firebase";
 import { onAuthStateChanged } from "firebase/auth";
 
 const GroupCodeAddPage = () => {
@@ -21,19 +21,18 @@ const GroupCodeAddPage = () => {
   const handleJoinGroup = () => {
     // コードを使ってチームに参加する処理を実装してください
     // Insert group member list
-    if(code != ""){
-        insertGroupMemberList(user.uid, "", code, user.email)
+    if (code != "") {
+      insertGroupMemberList(user.uid, "", code, user.email)
         .then((data) => {
-            console.log("Group member list data inserted:", data);
+          console.log("Group member list data inserted:", data);
         })
         .catch((error) => {
-            console.error("Error inserting group member list:", error);
-            alert("コードが存在しません")
+          console.error("Error inserting group member list:", error);
+          alert("コードが存在しません");
         });
-    }else{
-        alert("コードを入力してください")
+    } else {
+      alert("コードを入力してください");
     }
-
   };
 
   return (

@@ -1,11 +1,11 @@
 import axios from "axios";
-import UrlConstant from "../constants/url_constant"
+import UrlConstant from "../constants/url_constant";
 
 const API_URL = UrlConstant.apiUrl; // ここにAPIのベースURLを設定してください
 
 export async function getUserNickname(email) {
   try {
-    const response = await axios.get(`${API_URL}/getUserNickname`, {
+    const response = await axios.get(API_URL + `getUserNickname`, {
       headers: {
         email: email,
       },
@@ -19,7 +19,7 @@ export async function getUserNickname(email) {
 
 export async function insertUserInfo(nickname, email) {
   try {
-    const response = await axios.post(`${API_URL}/insertUserInfo`, {
+    const response = await axios.post(API_URL + `insertUserInfo`, {
       nickname: nickname,
       email: email,
     });
