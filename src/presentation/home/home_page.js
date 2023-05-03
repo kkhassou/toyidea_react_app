@@ -12,7 +12,11 @@ export const HomePage = () => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        setUser(user);
+        if (user.emailVerified) {
+          setUser(user);
+        } else {
+          alert("送信したメールのリンクをクリックしてください");
+        }
       } else {
         setUser(null);
       }

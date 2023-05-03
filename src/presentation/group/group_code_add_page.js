@@ -9,7 +9,7 @@ const GroupCodeAddPage = () => {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
+      if (user.emailVerified) {
         setUser(user);
       } else {
         setUser(null);

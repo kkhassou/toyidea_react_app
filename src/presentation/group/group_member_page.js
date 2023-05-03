@@ -11,14 +11,11 @@ const GroupMemberPage = () => {
 
   useEffect(() => {
     // DBから取得したメンバー名の一覧を設定してください
-    // setMembers(取得したデータ);
     const code = location.state.code;
-    //   alert("code:" + code)
     getGroupMemberList(code)
       .then((data) => {
         console.log("Group member list data:", data);
         setMembers(data);
-        // alert(data)
       })
       .catch((error) => {
         console.error("Error fetching group member list:", error);

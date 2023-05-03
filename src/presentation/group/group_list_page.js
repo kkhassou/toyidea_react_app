@@ -10,10 +10,8 @@ const GroupListPage = () => {
   const navigate = useNavigate();
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
+      if (user.emailVerified) {
         setUser(user);
-        //   alert(user.uid)
-        // TODO:uidではなく、emailで検索しなくてはいけない
         getBelongGroupList(user.email)
           .then((data) => {
             setGroupList(data);
@@ -23,10 +21,10 @@ const GroupListPage = () => {
           .catch((error) => {
             console.error("Error fetching group list:", error);
           });
-        return unsubscribe;
       } else {
         setUser(null);
       }
+      return unsubscribe;
     });
     // DBから取得したチーム名とチームコードの一覧を設定してください
     // setGroups(取得したデータ);

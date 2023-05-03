@@ -12,7 +12,7 @@ export const LoginPage = () => {
     e.preventDefault();
     try {
       signInWithEmailAndPassword(auth, email, password);
-      alert("ログイン成功");
+      // alert("ログイン成功");
       navigate("/");
     } catch (error) {
       alert("ログイン失敗: " + error.message);

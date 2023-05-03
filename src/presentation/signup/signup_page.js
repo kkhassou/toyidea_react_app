@@ -1,42 +1,51 @@
-// src/Signup.js
+// SignupPage.js
 import React, { useState } from "react";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../firebase";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
+} from "firebase/auth";
+
 export const SignupPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const handleSignup = async (e) => {
     e.preventDefault();
+    const auth = getAuth();
+
     try {
-      createUserWithEmailAndPassword(auth, email, password);
-      alert("アカウント作成成功");
-      // history.push('/');
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const user = userCredential.user;
+      await sendEmailVerification(user);
+      alert("アカウント作成に成功しました。確認メールを送信しました。");
     } catch (error) {
-      alert("アカウント作成失敗: " + error.message);
+      alert("アカウント作成に失敗しました: " + error.message);
     }
   };
 
   return (
     <div>
-      {" "}
-      <h1>Signup</h1>{" "}
+      <h1>Signup</h1>
       <form onSubmit={handleSignup}>
-        {" "}
         <input
           type="email"
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-        />{" "}
+        />
         <input
           type="password"
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-        />{" "}
-        <button type="submit">サインアップ</button>{" "}
-      </form>{" "}
+        />
+        <button type="submit">サインアップ</button>
+      </form>
     </div>
   );
 };
