@@ -45,7 +45,7 @@ export const HomePage = () => {
         <span> </span>
         ホーム
       </h1>
-      {user ? (
+      {user && user.emailVerified ? (
         <button onClick={handleLogout}>ログアウト</button>
       ) : (
         <>
@@ -84,17 +84,21 @@ export const HomePage = () => {
           </Button>
         </div>
       </div>
-      <div>
-        <Link to="/group/list">
-          <button>加入一覧</button>
-        </Link>
-        <Link to="/group/code-add">
-          <button>コード追加</button>
-        </Link>
-        <Link to="/group/code-publish">
-          <button>コード発行</button>
-        </Link>
-      </div>
+      {user && user.emailVerified ? (
+        <div>
+          <Link to="/group/list">
+            <button>加入一覧</button>
+          </Link>
+          <Link to="/group/code-add">
+            <button>コード追加</button>
+          </Link>
+          <Link to="/group/code-publish">
+            <button>コード発行</button>
+          </Link>
+        </div>
+      ) : (
+        <></>
+      )}
     </div>
   );
 };

@@ -32,6 +32,14 @@ const SimpleListPage = () => {
           });
       } else {
         setUser(null);
+        getSkyRainUmbrellaList()
+          .then((data) => {
+            setList(data);
+            setFilteredData(data);
+          })
+          .catch((error) => {
+            console.error("Error fetching sky rain umbrella list:", error);
+          });
       }
     });
     return unsubscribe;

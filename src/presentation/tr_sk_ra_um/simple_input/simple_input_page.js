@@ -5,6 +5,7 @@ import { TextField, Button, Select, MenuItem } from "@mui/material";
 import { insertSkyRainUmbrella } from "../../../api/s_r_u_api_client";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "../../../firebase";
+
 const SimpleInputPage = () => {
   const [user, setUser] = useState(null);
   const location = useLocation();
@@ -42,8 +43,8 @@ const SimpleInputPage = () => {
     // 保存ボタンが押された時の処理を記述
     try {
       const result = await insertSkyRainUmbrella(
-        user.uid,
-        user.email,
+        // user.uid,
+        // user.email,
         inputs.trigger,
         inputs.sky,
         inputs.rain,
