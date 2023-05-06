@@ -6,6 +6,9 @@ import { Select, MenuItem, Typography, Box } from "@mui/material";
 import FormControl from "@mui/material/FormControl";
 import { Link, useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
+// import { FavoriteIcon } from "@mui/icons-material/Favorite";
+// import { Favorite } from "@mui/icons-material";
+
 const SimpleListPage = () => {
   const [list, setList] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
@@ -331,6 +334,9 @@ const SimpleListPage = () => {
               <button onClick={() => handleReconsider(item.id)}>
                 再考する
               </button>
+              {/* <Icon> */}
+              {/* <Favorite /> */}
+              {/* </Icon> */}
             </div>
           ))}
         </div>
