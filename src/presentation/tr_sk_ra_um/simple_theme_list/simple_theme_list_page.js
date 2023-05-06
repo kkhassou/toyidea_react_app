@@ -37,11 +37,9 @@ const SimpleThemeList = () => {
       <Box
         sx={{ display: "flex", flexDirection: "column", alignItems: "left" }}
       >
-        {" "}
         <Typography variant="h5" gutterBottom>
-          {" "}
-          新しいテーマ{" "}
-        </Typography>{" "}
+          新しいテーマ
+        </Typography>
         <TextField
           value={newTheme}
           onChange={(e) => handleInputChange(e, setNewTheme)}

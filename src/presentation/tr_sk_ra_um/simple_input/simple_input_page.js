@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
-import { TextField, Button, Select, MenuItem } from "@mui/material";
+import { TextField, Button, Select, MenuItem, Typography } from "@mui/material";
 import { insertSkyRainUmbrella } from "../../../api/s_r_u_api_client";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "../../../firebase";
@@ -10,6 +10,7 @@ const SimpleInputPage = () => {
   const [user, setUser] = useState(null);
   const location = useLocation();
   const itemData = location.state?.item;
+  const theme = location.state?.theme;
   const navigate = useNavigate();
   const [inputs, setInputs] = useState({
     trigger: itemData ? itemData.trigger : "",
@@ -45,7 +46,7 @@ const SimpleInputPage = () => {
       const result = await insertSkyRainUmbrella(
         // user.uid,
         // user.email,
-        inputs.trigger,
+        location.state?.theme,
         inputs.sky,
         inputs.rain,
         inputs.umbrella
@@ -72,9 +73,9 @@ const SimpleInputPage = () => {
     }
   };
 
-  const handleShowList = () => {
+  const handleShowList = (theme) => {
     // 一覧画面へボタンが押された時の処理を記述
-    navigate("/simple_list", { state: {} });
+    navigate("/simple_list", { state: { theme } });
   };
 
   const handleClearOption = (event) => {
@@ -85,6 +86,14 @@ const SimpleInputPage = () => {
     <div style={{ display: "flex", flexDirection: "column" }}>
       <h1>起空雨傘入力</h1>
       <div style={{ display: "flex", flexDirection: "column" }}>
+        <Typography variant="h6" gutterBottom>
+          テーマ
+        </Typography>
+        <Typography variant="h5" gutterBottom>
+          {location.state?.theme}
+        </Typography>
+      </div>
+      {/* <div style={{ display: "flex", flexDirection: "column" }}>
         <label>起</label>
         <TextField
           name="trigger"
@@ -102,15 +111,15 @@ const SimpleInputPage = () => {
             },
           }}
         />
-      </div>
-      <Button
+      </div> */}
+      {/* <Button
         sx={{ minWidth: "80px", maxWidth: "80px" }}
         variant="outlined"
         name="trigger"
         onClick={handleClear}
       >
         クリア
-      </Button>
+      </Button> */}
       <div style={{ display: "flex", flexDirection: "column" }}>
         <label>空</label>
         <TextField
@@ -119,7 +128,6 @@ const SimpleInputPage = () => {
           onChange={handleChange}
           multiline
           inputProps={{
-            maxLength: 30,
             style: { whiteSpace: "pre-wrap", wordWrap: "break-word" },
             wrap: "soft",
           }}
@@ -127,6 +135,7 @@ const SimpleInputPage = () => {
             "& .MuiOutlinedInput-root": {
               padding: "5px 10px",
             },
+            width: "500px", // ここで横幅を指定
           }}
         />
       </div>
@@ -146,7 +155,6 @@ const SimpleInputPage = () => {
           onChange={handleChange}
           multiline
           inputProps={{
-            maxLength: 30,
             style: { whiteSpace: "pre-wrap", wordWrap: "break-word" },
             wrap: "soft",
           }}
@@ -154,6 +162,7 @@ const SimpleInputPage = () => {
             "& .MuiOutlinedInput-root": {
               padding: "5px 10px",
             },
+            width: "500px", // ここで横幅を指定
           }}
         />
       </div>
@@ -173,7 +182,6 @@ const SimpleInputPage = () => {
           onChange={handleChange}
           multiline
           inputProps={{
-            maxLength: 300,
             style: { whiteSpace: "pre-wrap", wordWrap: "break-word" },
             wrap: "soft",
           }}
@@ -181,6 +189,7 @@ const SimpleInputPage = () => {
             "& .MuiOutlinedInput-root": {
               padding: "5px 10px",
             },
+            width: "500px", // ここで横幅を指定
           }}
         />
       </div>
@@ -206,7 +215,7 @@ const SimpleInputPage = () => {
           <MenuItem value="skyRainAndUmbrella">傘と雨と空を消す</MenuItem>
           <MenuItem value="all">全部消す</MenuItem>
         </Select>
-        <button onClick={handleShowList}>一覧画面へ</button>
+        <button onClick={() => handleShowList(theme)}>一覧画面へ</button>
       </div>
     </div>
   );

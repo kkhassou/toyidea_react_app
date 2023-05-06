@@ -5,13 +5,16 @@ const API_URL = UrlConstant.apiUrl; // ここにAPIのベースURLを設定し�
 
 export async function getSkyRainUmbrellaList(
   // userId
-  email
+  // email
+  theme
 ) {
   try {
+    // alert(theme)
     const response = await axios.get(API_URL + `skyRainUmbrellaList`, {
       headers: {
         // userid: userId,
         // email: email,
+        theme: theme,
       },
     });
     return response.data;
@@ -38,7 +41,8 @@ export async function getSkyRainUmbrellaThemeDistinctList() {
 export async function insertSkyRainUmbrella(
   // userId,
   // email,
-  trigger,
+  theme,
+  // trigger,
   sky,
   rain,
   umbrella
@@ -47,7 +51,8 @@ export async function insertSkyRainUmbrella(
     const response = await axios.post(API_URL + `skyRainUmbrellaInput`, {
       // userId: userId,
       // email: email,
-      trigger: trigger,
+      // trigger: trigger,
+      theme: theme,
       sky: sky,
       rain: rain,
       umbrella: umbrella,
