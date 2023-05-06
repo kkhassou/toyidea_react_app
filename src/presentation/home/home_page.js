@@ -67,7 +67,7 @@ export const HomePage = () => {
             sx={{ minWidth: "150px", maxWidth: "150px" }}
             variant="outlined"
             name="sky"
-            onClick={() => navigate("/simple_input", { state: {} })}
+            onClick={() => navigate("/simple_theme_List", { state: {} })}
           >
             起空雨傘はじめる
           </Button>
@@ -77,7 +77,7 @@ export const HomePage = () => {
             variant="outlined"
             name="sky"
             onClick={() =>
-              navigate("/5w1h_inovation/simple/first_step_page", { state: {} })
+              navigate("/5w1h_inovation/simple/first_step", { state: {} })
             }
           >
             イノベーション①はじめる

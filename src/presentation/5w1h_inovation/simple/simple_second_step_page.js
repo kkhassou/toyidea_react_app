@@ -27,12 +27,12 @@ const SimpleSecondStepPage = () => {
   return (
     <TableContainer component={Paper}>
       <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>Who</TableCell>
-            <TableCell>Where</TableCell>
-            <TableCell>When</TableCell>
-            <TableCell>What(ニーズ)</TableCell>
+        <TableHead key="table-head">
+          <TableRow key="table-row">
+            <TableCell key="who-cell">Who</TableCell>
+            <TableCell key="where-cell">Where</TableCell>
+            <TableCell key="when-cell">When</TableCell>
+            <TableCell key="what-cell">What(ニーズ)</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>

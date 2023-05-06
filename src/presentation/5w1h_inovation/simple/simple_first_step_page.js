@@ -496,7 +496,7 @@ const SimpleFirstStepPage = () => {
         <button
           style={{ marginRight: "10px" }}
           onClick={() =>
-            navigate("/5w1h_inovation/simple/second_step_page", { state: {} })
+            navigate("/5w1h_inovation/simple/second_step", { state: {} })
           }
         >
           次へ
