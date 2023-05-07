@@ -5,8 +5,11 @@ import { TextField, Button, Select, MenuItem, Typography } from "@mui/material";
 import { insertSkyRainUmbrella } from "../../../api/s_r_u_api_client";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "../../../firebase";
+import { FormControlLabel, Switch } from "@mui/material";
+import ReferenceZone from "../../../widgets/reference_zone";
 
 const SimpleInputPage = () => {
+  const [showReference, setShowReference] = useState(false); // スイッチの初期値をtrueに設定
   const [user, setUser] = useState(null);
   const location = useLocation();
   const itemData = location.state?.item;
@@ -81,6 +84,18 @@ const SimpleInputPage = () => {
   const handleClearOption = (event) => {
     setClearOption(event.target.value);
   };
+  const handleSwitchChange = (event) => {
+    setShowReference(event.target.checked); // スイッチの状態を更新
+  };
+  const handleSet = (item) => {
+    // 親コンポーネントの空雨傘のテキストを更新する処理を実装
+    setInputs((prevInputs) => ({
+      ...prevInputs,
+      sky: item.sky,
+      rain: item.rain,
+      umbrella: item.umbrella,
+    }));
+  };
 
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
@@ -93,33 +108,6 @@ const SimpleInputPage = () => {
           {location.state?.theme}
         </Typography>
       </div>
-      {/* <div style={{ display: "flex", flexDirection: "column" }}>
-        <label>起</label>
-        <TextField
-          name="trigger"
-          value={inputs.trigger}
-          onChange={handleChange}
-          multiline
-          inputProps={{
-            maxLength: 30,
-            style: { whiteSpace: "pre-wrap", wordWrap: "break-word" },
-            wrap: "soft",
-          }}
-          sx={{
-            "& .MuiOutlinedInput-root": {
-              padding: "5px 10px",
-            },
-          }}
-        />
-      </div> */}
-      {/* <Button
-        sx={{ minWidth: "80px", maxWidth: "80px" }}
-        variant="outlined"
-        name="trigger"
-        onClick={handleClear}
-      >
-        クリア
-      </Button> */}
       <div style={{ display: "flex", flexDirection: "column" }}>
         <label>空</label>
         <TextField
@@ -217,6 +205,21 @@ const SimpleInputPage = () => {
         </Select>
         <button onClick={() => handleShowList(theme)}>一覧画面へ</button>
       </div>
+
+      <FormControlLabel
+        control={
+          <Switch
+            checked={showReference} // スイッチの状態を設定
+            onChange={handleSwitchChange} // スイッチが変更されたときの処理を設定
+          />
+        }
+        label="参考を表示"
+      />
+      {showReference && (
+        <div>
+          <ReferenceZone onSet={(item) => handleSet(item)} />
+        </div>
+      )}
     </div>
   );
 };

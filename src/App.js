@@ -10,6 +10,7 @@ import GroupListPage from "./presentation/group/group_list_page";
 import GroupMemberPage from "./presentation/group/group_member_page";
 import SimpleInputPage from "./presentation/tr_sk_ra_um/simple_input/simple_input_page";
 import SimpleListPage from "./presentation/tr_sk_ra_um/simple_list/simple_list_page";
+import SimpleListCommentPage from "./presentation/tr_sk_ra_um/simple_list/simple_list_comment_page";
 import SimpleThemeList from "./presentation/tr_sk_ra_um/simple_theme_list/simple_theme_list_page";
 import SimpleFirstStepPage from "./presentation/5w1h_inovation/simple/simple_first_step_page";
 import SimpleSecondStepPage from "./presentation/5w1h_inovation/simple/simple_second_step_page";
@@ -27,6 +28,11 @@ function App() {
         <Route path="/simple_input" element={<SimpleInputPage />} />
         <Route path="/simple_list" element={<SimpleListPage />} />
         <Route path="/simple_theme_List" element={<SimpleThemeList />} />
+        <Route
+          path="/simple_theme_List_comment"
+          element={<SimpleListCommentPage />}
+        />
+
         <Route
           path="/5w1h_inovation/simple/first_step"
           element={<SimpleFirstStepPage />}

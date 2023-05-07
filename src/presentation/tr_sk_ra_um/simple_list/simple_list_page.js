@@ -2,12 +2,15 @@ import React, { useState, useEffect } from "react";
 import { getSkyRainUmbrellaList } from "../../../api/s_r_u_api_client";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "../../../firebase";
-import { Select, MenuItem, Typography, Box } from "@mui/material";
+import { Select, MenuItem, Typography, Box, IconButton } from "@mui/material";
 import FormControl from "@mui/material/FormControl";
 import { Link, useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 // import { FavoriteIcon } from "@mui/icons-material/Favorite";
 // import { Favorite } from "@mui/icons-material";
+import FavoriteOutlinedIcon from "@mui/icons-material/FavoriteOutlined";
+import StarIcon from "@mui/icons-material/Star";
+import StarOutlinedIcon from "@mui/icons-material/StarOutlined";
 
 const SimpleListPage = () => {
   const [list, setList] = useState([]);
@@ -18,6 +21,8 @@ const SimpleListPage = () => {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
+  const [selected, setSelected] = useState({});
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -101,6 +106,12 @@ const SimpleListPage = () => {
     navigate("/simple_input", { state: { item: selectedItem } });
   };
 
+  const handleComment = (id) => {
+    // コメントするボタンが押された時の処理を記述
+    const selectedItem = list.find((item) => item.id === id);
+    navigate("/simple_theme_List_comment", { state: { item: selectedItem } });
+  };
+
   const getContentOptions = () => {
     return list
       .map((item) => item[filterItem])
@@ -110,6 +121,10 @@ const SimpleListPage = () => {
           {value}
         </MenuItem>
       ));
+  };
+
+  const handleClick = (id) => {
+    setSelected((prev) => ({ ...prev, [id]: !prev[id] }));
   };
 
   return (
@@ -146,14 +161,6 @@ const SimpleListPage = () => {
               >
                 全て
               </MenuItem>
-              {/* <MenuItem
-            value="trigger"
-            style={{
-              fontSize: "20px",
-            }}
-          >
-            起のみ
-          </MenuItem> */}
               <MenuItem
                 value="sky"
                 style={{
@@ -196,9 +203,6 @@ const SimpleListPage = () => {
               variant="outlined"
               style={{ fontSize: "20px", height: "40px" }}
             >
-              {/* <MenuItem value="trigger" style={{ fontSize: "20px" }}>
-            起
-          </MenuItem> */}
               <MenuItem value="sky" style={{ fontSize: "20px" }}>
                 空
               </MenuItem>
@@ -234,49 +238,6 @@ const SimpleListPage = () => {
           </FormControl>
         </Box>
       </Box>
-      {/* <Box
-        sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}
-      >
-        <Box sx={{ display: "flex", alignItems: "center" }}>
-          <Typography variant="h6">項目フィルタ:</Typography>
-          <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
-            <Select
-              value={filter}
-              onChange={handleFilterChange}
-              variant="outlined"
-              style={{ fontSize: "20px", height: "40px" }}
-            >
-              ...
-            </Select>
-          </FormControl>
-        </Box>
-        <Box sx={{ display: "flex", alignItems: "center" }}>
-          <Typography variant="h6">フィルタ項目:</Typography>
-          <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
-            <Select
-              value={filterItem}
-              onChange={handleFilterItemChange}
-              variant="outlined"
-              style={{ fontSize: "20px", height: "40px" }}
-            >
-              ...
-            </Select>
-          </FormControl>
-        </Box>
-        <Box sx={{ display: "flex", alignItems: "center" }}>
-          <Typography variant="h6">内容フィルタ:</Typography>
-          <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
-            <Select
-              value={contentFilter}
-              onChange={handleContentFilterChange}
-              variant="outlined"
-              style={{ fontSize: "20px", height: "40px" }}
-            >
-              ...
-            </Select>
-          </FormControl>
-        </Box>
-      </Box> */}
       <div
         style={{
           borderTop: "1px solid #cccccc",
@@ -331,12 +292,21 @@ const SimpleListPage = () => {
               {filter === "all" || filter === "umbrella" ? (
                 <p>傘：{item.umbrella}</p>
               ) : null}
-              <button onClick={() => handleReconsider(item.id)}>
-                再考する
-              </button>
-              {/* <Icon> */}
-              {/* <Favorite /> */}
-              {/* </Icon> */}
+
+              <Box display="flex" alignItems="center">
+                <button onClick={() => handleReconsider(item.id)}>
+                  再考する
+                </button>
+                <IconButton onClick={() => handleClick(item.id)}>
+                  {selected[item.id] ? (
+                    <StarIcon sx={{ color: "#FFD700" }} />
+                  ) : (
+                    <StarOutlinedIcon />
+                  )}
+                </IconButton>
+                {/* TODO:いいねが押された数を表示できるようにする */}
+                <button onClick={() => handleComment(item.id)}>コメント</button>
+              </Box>
             </div>
           ))}
         </div>
