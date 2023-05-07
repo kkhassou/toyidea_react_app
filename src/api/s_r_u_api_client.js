@@ -29,10 +29,17 @@ export async function getSkyRainUmbrellaThemeDistinctList() {
   }
 }
 
-export async function insertSkyRainUmbrella(theme, sky, rain, umbrella) {
+export async function insertSkyRainUmbrella(
+  theme,
+  trigger,
+  sky,
+  rain,
+  umbrella
+) {
   try {
     const response = await axios.post(API_URL + `skyRainUmbrellaInput`, {
       theme: theme,
+      trigger: trigger,
       sky: sky,
       rain: rain,
       umbrella: umbrella,

@@ -7,6 +7,7 @@ import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "../../../firebase";
 import { FormControlLabel, Switch } from "@mui/material";
 import ReferenceZone from "../../../widgets/reference_zone";
+import { Label } from "@mui/icons-material";
 
 const SimpleInputPage = () => {
   const [showReference, setShowReference] = useState(false); // スイッチの初期値をtrueに設定
@@ -50,6 +51,7 @@ const SimpleInputPage = () => {
         // user.uid,
         // user.email,
         theme,
+        inputs.trigger,
         inputs.sky,
         inputs.rain,
         inputs.umbrella
@@ -126,6 +128,33 @@ const SimpleInputPage = () => {
         </Typography>
       </div>
       <div style={{ display: "flex", flexDirection: "column" }}>
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          <label>起</label>
+          <TextField
+            name="trigger"
+            value={inputs.trigger}
+            onChange={handleChange}
+            multiline
+            inputProps={{
+              maxLength: 30,
+              style: { whiteSpace: "pre-wrap", wordWrap: "break-word" },
+              wrap: "soft",
+            }}
+            sx={{
+              "& .MuiOutlinedInput-root": {
+                padding: "5px 10px",
+              },
+            }}
+          />
+        </div>
+        <Button
+          sx={{ minWidth: "80px", maxWidth: "80px" }}
+          variant="outlined"
+          name="trigger"
+          onClick={handleClear}
+        >
+          クリア
+        </Button>
         <label>空</label>
         <TextField
           name="sky"
@@ -207,20 +236,45 @@ const SimpleInputPage = () => {
         クリア
       </Button>
       <div>
-        <button onClick={handleSave}>保存</button>
-        <label>保存時設定</label>
+        <Button
+          variant="contained"
+          onClick={handleSave}
+          sx={{
+            marginBottom: "10px",
+            marginTop: "10px",
+            marginRight: "10px",
+            height: "40px",
+            width: "80px",
+          }}
+        >
+          保存
+        </Button>
+        <Typography
+          component="span"
+          variant="body1"
+          sx={{ marginRight: "10px", lineHeight: "30px" }}
+        >
+          保存時設定
+        </Typography>
         <Select
           value={clearOption}
           onChange={handleClearOption}
           displayEmpty
-          style={{ fontSize: "15px", height: "30px" }}
+          sx={{ fontSize: "15px", height: "30px", marginBottom: "10px" }}
         >
           <MenuItem value="umbrella">傘だけ消す</MenuItem>
           <MenuItem value="rainAndUmbrella">傘と雨を消す</MenuItem>
           <MenuItem value="skyRainAndUmbrella">傘と雨と空を消す</MenuItem>
           <MenuItem value="all">全部消す</MenuItem>
         </Select>
-        <button onClick={() => handleShowList(theme)}>一覧画面へ</button>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => handleShowList(theme)}
+          sx={{ marginLeft: "10px" }}
+        >
+          一覧画面へ
+        </Button>
       </div>
 
       <FormControlLabel

@@ -180,6 +180,14 @@ const SimpleListPage = () => {
                 全て
               </MenuItem>
               <MenuItem
+                value="trigger"
+                style={{
+                  fontSize: "20px",
+                }}
+              >
+                起のみ
+              </MenuItem>
+              <MenuItem
                 value="sky"
                 style={{
                   fontSize: "20px",
@@ -221,6 +229,9 @@ const SimpleListPage = () => {
               variant="outlined"
               style={{ fontSize: "20px", height: "40px" }}
             >
+              <MenuItem value="trigger" style={{ fontSize: "20px" }}>
+                起
+              </MenuItem>
               <MenuItem value="sky" style={{ fontSize: "20px" }}>
                 空
               </MenuItem>
@@ -298,9 +309,9 @@ const SimpleListPage = () => {
                 margin: "10px",
               }}
             >
-              {/* {filter === "all" || filter === "trigger" ? (
-              <p>起：{item.trigger}</p>
-            ) : null} */}
+              {filter === "all" || filter === "trigger" ? (
+                <p>起：{item.trigger}</p>
+              ) : null}
               {filter === "all" || filter === "sky" ? (
                 <p>空：{item.sky}</p>
               ) : null}
@@ -322,7 +333,6 @@ const SimpleListPage = () => {
                     <StarOutlinedIcon />
                   )}
                 </IconButton>
-                {/* TODO:いいねが押された数を表示できるようにする */}
                 <button onClick={() => handleComment(item.id)}>コメント</button>
               </Box>
             </div>
