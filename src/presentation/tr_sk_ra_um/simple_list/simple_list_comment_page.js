@@ -54,7 +54,8 @@ const SimpleListCommentPage = () => {
   };
 
   return (
-    <Container maxWidth="sm">
+    <Box display="flex" alignItems="flex-start" width="100%">
+      {/* <Container maxWidth="sm"> */}
       <Box mt={3} mb={3}>
         <Grid container spacing={3} alignItems="center">
           <Grid item xs={10}>
@@ -108,7 +109,8 @@ const SimpleListCommentPage = () => {
           />
         </Box>
       </form>
-    </Container>
+      {/* </Container> */}
+    </Box>
   );
 };
 
