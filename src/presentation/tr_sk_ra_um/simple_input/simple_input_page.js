@@ -13,7 +13,7 @@ const SimpleInputPage = () => {
   const [user, setUser] = useState(null);
   const location = useLocation();
   const itemData = location.state?.item;
-  const theme = location.state?.theme;
+  const theme = location.state?.theme || itemData?.theme;
   const navigate = useNavigate();
   const [inputs, setInputs] = useState({
     trigger: itemData ? itemData.trigger : "",
@@ -49,7 +49,7 @@ const SimpleInputPage = () => {
       const result = await insertSkyRainUmbrella(
         // user.uid,
         // user.email,
-        location.state?.theme,
+        theme,
         inputs.sky,
         inputs.rain,
         inputs.umbrella
@@ -96,16 +96,33 @@ const SimpleInputPage = () => {
       umbrella: item.umbrella,
     }));
   };
-
+  const handleBack = () => {
+    navigate("/simple_theme_List");
+  };
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
-      <h1>起空雨傘入力</h1>
+      <div
+        style={{ display: "flex", flexDirection: "row", alignItems: "center" }}
+      >
+        <h1>起空雨傘入力</h1>
+        <Button
+          variant="outlined"
+          onClick={handleBack}
+          sx={{
+            marginLeft: "20px",
+            height: "30px",
+            width: "150px",
+          }}
+        >
+          前のページに戻る
+        </Button>
+      </div>
       <div style={{ display: "flex", flexDirection: "column" }}>
         <Typography variant="h6" gutterBottom>
           テーマ
         </Typography>
         <Typography variant="h5" gutterBottom>
-          {location.state?.theme}
+          {theme}
         </Typography>
       </div>
       <div style={{ display: "flex", flexDirection: "column" }}>

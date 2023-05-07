@@ -32,6 +32,10 @@ const SimpleThemeList = () => {
     }
     navigate("/simple_input", { state: { theme: newTheme } });
   };
+  const handleBack = () => {
+    navigate("/");
+  };
+
   return (
     <Box sx={{ display: "flex", flexDirection: "column", alignItems: "left" }}>
       <Box
@@ -112,6 +116,16 @@ const SimpleThemeList = () => {
           </Button>
         </Box>
       ))}
+      <Button
+        variant="outlined"
+        onClick={handleBack}
+        sx={{
+          marginTop: "20px",
+          width: "200px",
+        }}
+      >
+        前のページに戻る
+      </Button>
     </Box>
   );
 };

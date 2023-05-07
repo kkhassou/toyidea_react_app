@@ -2,7 +2,14 @@ import React, { useState, useEffect } from "react";
 import { getSkyRainUmbrellaList } from "../../../api/s_r_u_api_client";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "../../../firebase";
-import { Select, MenuItem, Typography, Box, IconButton } from "@mui/material";
+import {
+  Select,
+  MenuItem,
+  Typography,
+  Box,
+  IconButton,
+  Button,
+} from "@mui/material";
 import FormControl from "@mui/material/FormControl";
 import { Link, useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
@@ -11,7 +18,6 @@ import { useLocation } from "react-router-dom";
 import FavoriteOutlinedIcon from "@mui/icons-material/FavoriteOutlined";
 import StarIcon from "@mui/icons-material/Star";
 import StarOutlinedIcon from "@mui/icons-material/StarOutlined";
-
 const SimpleListPage = () => {
   const [list, setList] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
@@ -27,12 +33,7 @@ const SimpleListPage = () => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         setUser(user);
-        getSkyRainUmbrellaList(
-          // "ec69W4CxTagT47m2qKTLy0HFG3p2"
-          // user.uid
-          // user.email
-          location.state?.theme
-        )
+        getSkyRainUmbrellaList(location.state?.theme)
           .then((data) => {
             setList(data);
             setFilteredData(data);
@@ -126,10 +127,27 @@ const SimpleListPage = () => {
   const handleClick = (id) => {
     setSelected((prev) => ({ ...prev, [id]: !prev[id] }));
   };
-
+  const handleBack = () => {
+    navigate("/simple_input", { state: { theme: location.state?.theme } });
+  };
   return (
     <div>
-      <h1>起空雨傘一覧</h1>
+      <div
+        style={{ display: "flex", flexDirection: "row", alignItems: "center" }}
+      >
+        <h1>起空雨傘一覧</h1>
+        <Button
+          variant="outlined"
+          onClick={handleBack}
+          sx={{
+            marginLeft: "20px",
+            height: "30px",
+            width: "150px",
+          }}
+        >
+          前のページに戻る
+        </Button>
+      </div>
       <Box
         sx={{
           display: "flex",

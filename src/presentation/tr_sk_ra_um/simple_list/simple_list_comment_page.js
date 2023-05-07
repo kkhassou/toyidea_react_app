@@ -4,7 +4,6 @@ import {
   Avatar,
   Box,
   Button,
-  Container,
   Divider,
   Grid,
   List,
@@ -16,13 +15,13 @@ import {
 } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import { get_comment_list, insert_comment } from "../../../api/comment_client";
-
+import { Link, useNavigate } from "react-router-dom";
 const SimpleListCommentPage = () => {
   const [comment, setComment] = useState("");
   const [commentList, setCommentList] = useState([]);
   const location = useLocation();
   const [data, setData] = useState([]);
-
+  const navigate = useNavigate();
   useEffect(() => {
     get_comment_list(location.state.item.id)
       .then((data) => {
@@ -52,32 +51,46 @@ const SimpleListCommentPage = () => {
       }
     }
   };
-
+  const handleBack = () => {
+    navigate("/simple_list", { state: { theme: location.state.item.theme } });
+  };
   return (
-    <Box display="flex" alignItems="flex-start" width="100%">
-      {/* <Container maxWidth="sm"> */}
-      <Box mt={3} mb={3}>
-        <Grid container spacing={3} alignItems="center">
-          <Grid item xs={10}>
-            <Typography variant="subtitle1">テーマ</Typography>
-            <Typography variant="subtitle2">
-              {location.state.item.theme}
-            </Typography>
-            <Typography variant="subtitle1">空</Typography>
-            <Typography variant="subtitle2">
-              {location.state.item.sky}
-            </Typography>
-            <Typography variant="subtitle1">雨</Typography>
-            <Typography variant="subtitle2">
-              {location.state.item.rain}
-            </Typography>
-            <Typography variant="subtitle1">傘</Typography>
-            <Typography variant="subtitle2">
-              {location.state.item.umbrella}
-            </Typography>
-          </Grid>
+    <Box mx="auto" mt={3} mb={3} width="100%" maxWidth="sm" textAlign="left">
+      <Button
+        variant="outlined"
+        onClick={handleBack}
+        sx={{
+          marginLeft: "0px",
+          height: "30px",
+          width: "150px",
+        }}
+      >
+        前のページに戻る
+      </Button>
+      <Grid container direction="column" spacing={3}>
+        <Grid item>
+          <Typography variant="subtitle1">テーマ</Typography>
+          <Typography variant="subtitle2">
+            {location.state.item.theme}
+          </Typography>
         </Grid>
-      </Box>
+        <Grid item>
+          <Typography variant="subtitle1">空</Typography>
+          <Typography variant="subtitle2">{location.state.item.sky}</Typography>
+        </Grid>
+        <Grid item>
+          <Typography variant="subtitle1">雨</Typography>
+          <Typography variant="subtitle2">
+            {location.state.item.rain}
+          </Typography>
+        </Grid>
+        <Grid item>
+          <Typography variant="subtitle1">傘</Typography>
+          <Typography variant="subtitle2">
+            {location.state.item.umbrella}
+          </Typography>
+        </Grid>
+      </Grid>
       <Divider />
       <List>
         {commentList.map((comment, index) => (
@@ -109,7 +122,6 @@ const SimpleListCommentPage = () => {
           />
         </Box>
       </form>
-      {/* </Container> */}
     </Box>
   );
 };
