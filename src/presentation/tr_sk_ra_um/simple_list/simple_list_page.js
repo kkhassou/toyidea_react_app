@@ -9,6 +9,9 @@ import {
   Box,
   IconButton,
   Button,
+  FormGroup,
+  FormControlLabel,
+  Checkbox,
 } from "@mui/material";
 import FormControl from "@mui/material/FormControl";
 import { Link, useNavigate } from "react-router-dom";
@@ -22,13 +25,18 @@ const SimpleListPage = () => {
   const [list, setList] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [filter, setFilter] = useState("all");
-  const [filterItem, setFilterItem] = useState("sky");
+  const [filterItem, setFilterItem] = useState("all");
   const [contentFilter, setContentFilter] = useState("all");
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
   const [selected, setSelected] = useState({});
-
+  const [checkedItems, setCheckedItems] = useState({
+    trigger: true,
+    sky: true,
+    rain: true,
+    umbrella: true,
+  });
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -53,22 +61,19 @@ const SimpleListPage = () => {
           });
       }
     });
+
     return unsubscribe;
   }, []);
-
   useEffect(() => {
     let filtered = list;
 
-    if (filter !== "all") {
-      filtered = filtered.map((item) => {
-        const newItem = { ...item };
-        for (const key in newItem) {
-          if (key !== "id" && key !== filter) {
-            newItem[key] = "";
-          }
-        }
-        return newItem;
+    if (filter !== "all" && filter !== "none") {
+      filtered = list.filter((item) => {
+        const filterItems = filter.split("|");
+        return filterItems.some((filterItem) => item[filterItem]);
       });
+    } else if (filter === "none") {
+      filtered = [];
     }
 
     if (contentFilter !== "" && contentFilter !== "all") {
@@ -86,8 +91,26 @@ const SimpleListPage = () => {
   }, [filter, contentFilter, list]);
 
   const handleFilterChange = (event) => {
-    const newFilter = event.target.value;
-    setFilter(newFilter);
+    setCheckedItems({
+      ...checkedItems,
+      [event.target.name]: event.target.checked,
+    });
+
+    if (event.target.checked) {
+      setFilter((prevFilter) =>
+        prevFilter === "all"
+          ? event.target.name
+          : prevFilter + "|" + event.target.name
+      );
+    } else {
+      setFilter((prevFilter) => {
+        const newFilter = prevFilter
+          .split("|")
+          .filter((filterItem) => filterItem !== event.target.name)
+          .join("|");
+        return newFilter === "" ? "none" : newFilter;
+      });
+    }
   };
 
   const handleFilterItemChange = (event) => {
@@ -130,6 +153,7 @@ const SimpleListPage = () => {
   const handleBack = () => {
     navigate("/simple_input", { state: { theme: location.state?.theme } });
   };
+
   return (
     <div>
       <div
@@ -164,55 +188,57 @@ const SimpleListPage = () => {
           }}
         >
           <Typography variant="h6">項目フィルタ:</Typography>
-          <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
-            <Select
-              value={filter}
-              onChange={handleFilterChange}
-              variant="outlined"
-              style={{ fontSize: "20px", height: "40px" }}
+          <FormGroup>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                // justifyContent: "space-between",
+              }}
             >
-              <MenuItem
-                value="all"
-                style={{
-                  fontSize: "20px",
-                }}
-              >
-                全て
-              </MenuItem>
-              <MenuItem
-                value="trigger"
-                style={{
-                  fontSize: "20px",
-                }}
-              >
-                起のみ
-              </MenuItem>
-              <MenuItem
-                value="sky"
-                style={{
-                  fontSize: "20px",
-                }}
-              >
-                空のみ
-              </MenuItem>
-              <MenuItem
-                value="rain"
-                style={{
-                  fontSize: "20px",
-                }}
-              >
-                雨のみ
-              </MenuItem>
-              <MenuItem
-                value="umbrella"
-                style={{
-                  fontSize: "20px",
-                }}
-              >
-                傘のみ
-              </MenuItem>
-            </Select>
-          </FormControl>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={checkedItems.trigger}
+                    onChange={handleFilterChange}
+                    name="trigger"
+                  />
+                }
+                label="起"
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={checkedItems.sky}
+                    onChange={handleFilterChange}
+                    name="sky"
+                  />
+                }
+                label="空"
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={checkedItems.rain}
+                    onChange={handleFilterChange}
+                    name="rain"
+                  />
+                }
+                label="雨"
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={checkedItems.umbrella}
+                    onChange={handleFilterChange}
+                    name="umbrella"
+                  />
+                }
+                label="傘"
+              />
+            </Box>
+          </FormGroup>
         </Box>
         <Box
           sx={{
@@ -309,19 +335,10 @@ const SimpleListPage = () => {
                 margin: "10px",
               }}
             >
-              {filter === "all" || filter === "trigger" ? (
-                <p>起：{item.trigger}</p>
-              ) : null}
-              {filter === "all" || filter === "sky" ? (
-                <p>空：{item.sky}</p>
-              ) : null}
-              {filter === "all" || filter === "rain" ? (
-                <p>雨：{item.rain}</p>
-              ) : null}
-              {filter === "all" || filter === "umbrella" ? (
-                <p>傘：{item.umbrella}</p>
-              ) : null}
-
+              {checkedItems.trigger && <p>起：{item.trigger}</p>}
+              {checkedItems.sky && <p>空：{item.sky}</p>}
+              {checkedItems.rain && <p>雨：{item.rain}</p>}
+              {checkedItems.umbrella && <p>傘：{item.umbrella}</p>}
               <Box display="flex" alignItems="center">
                 <button onClick={() => handleReconsider(item.id)}>
                   再考する

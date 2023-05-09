@@ -8,6 +8,8 @@ import { auth } from "../../../firebase";
 import { FormControlLabel, Switch } from "@mui/material";
 import ReferenceZone from "../../../widgets/reference_zone";
 import { Label } from "@mui/icons-material";
+import RandomQuoteModal from "../../../widgets/random_quote_modal";
+import CelebrityQuotes from "../../../data/celebrity_quotes.json";
 
 const SimpleInputPage = () => {
   const [showReference, setShowReference] = useState(false); // スイッチの初期値をtrueに設定
@@ -23,6 +25,23 @@ const SimpleInputPage = () => {
     umbrella: itemData ? itemData.umbrella : "",
   });
   const [clearOption, setClearOption] = useState("umbrella");
+  const [showModal, setShowModal] = useState(false);
+  const [quote, setQuote] = useState(null);
+
+  // ランダムに引用を選択
+  const selectRandomQuote = () => {
+    const keys = Object.keys(CelebrityQuotes);
+    // const quotes = {
+    //   1: {
+    //     名前: "スティーブ・ジョブズ",
+    //     言葉: "唯一、自分自身に従うことができるのは、自分自身の心だけだ。",
+    //   },
+    //   // ... 他の引用
+    // };
+    // const keys = Object.keys(quotes);
+    const randomKey = keys[Math.floor(Math.random() * keys.length)];
+    setQuote(CelebrityQuotes[randomKey]);
+  };
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -33,7 +52,18 @@ const SimpleInputPage = () => {
     });
     return unsubscribe;
   }, []);
-
+  useEffect(() => {
+    if (showModal) {
+      selectRandomQuote();
+    }
+  }, [showModal]);
+  // モーダルを開く/閉じる
+  const handleModalOpen = () => {
+    setShowModal(true);
+  };
+  const handleModalClose = () => {
+    setShowModal(false);
+  };
   const handleChange = (event) => {
     const { name, value } = event.target;
     setInputs({ ...inputs, [name]: value });
@@ -73,6 +103,7 @@ const SimpleInputPage = () => {
         default:
           break;
       }
+      handleModalOpen();
     } catch (error) {
       console.error("保存に失敗しました:", error);
     }
@@ -144,6 +175,7 @@ const SimpleInputPage = () => {
               "& .MuiOutlinedInput-root": {
                 padding: "5px 10px",
               },
+              width: "500px", // ここで横幅を指定
             }}
           />
         </div>
@@ -276,7 +308,11 @@ const SimpleInputPage = () => {
           一覧画面へ
         </Button>
       </div>
-
+      <RandomQuoteModal
+        open={showModal}
+        handleClose={handleModalClose}
+        quote={quote}
+      />
       <FormControlLabel
         control={
           <Switch
@@ -285,6 +321,15 @@ const SimpleInputPage = () => {
           />
         }
         label="参考を表示"
+      />
+      <FormControlLabel
+        control={
+          <Switch
+            checked={showReference} // スイッチの状態を設定
+            onChange={handleSwitchChange} // スイッチが変更されたときの処理を設定
+          />
+        }
+        label="モーダル表示"
       />
       {showReference && (
         <div>
