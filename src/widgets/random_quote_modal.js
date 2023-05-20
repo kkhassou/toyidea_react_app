@@ -11,13 +11,17 @@ import {
 const RandomQuoteModal = ({ open, handleClose, quote }) => {
   return (
     <Dialog open={open} onClose={handleClose}>
-      <DialogTitle>{quote.名前}</DialogTitle>
-      <DialogContent>
-        <DialogContentText>{quote.言葉}</DialogContentText>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={handleClose}>閉じる</Button>
-      </DialogActions>
+      {quote && (
+        <>
+          <DialogTitle>{quote.名前}</DialogTitle>
+          <DialogContent>
+            <DialogContentText>{quote.言葉}</DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose}>閉じる</Button>
+          </DialogActions>
+        </>
+      )}
     </Dialog>
   );
 };

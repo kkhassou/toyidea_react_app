@@ -41,25 +41,17 @@ const SimpleListPage = () => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         setUser(user);
-        getSkyRainUmbrellaList(location.state?.theme)
-          .then((data) => {
-            setList(data);
-            setFilteredData(data);
-          })
-          .catch((error) => {
-            console.error("Error fetching sky rain umbrella list:", error);
-          });
       } else {
         setUser(null);
-        getSkyRainUmbrellaList(location.state?.theme)
-          .then((data) => {
-            setList(data);
-            setFilteredData(data);
-          })
-          .catch((error) => {
-            console.error("Error fetching sky rain umbrella list:", error);
-          });
       }
+      getSkyRainUmbrellaList(location.state?.theme)
+        .then((data) => {
+          setList(data);
+          setFilteredData(data);
+        })
+        .catch((error) => {
+          console.error("Error fetching sky rain umbrella list:", error);
+        });
     });
 
     return unsubscribe;
@@ -159,6 +151,13 @@ const SimpleListPage = () => {
       <div
         style={{ display: "flex", flexDirection: "row", alignItems: "center" }}
       >
+        {user && user.emailVerified ? (
+          <>
+            <p>プライベートモード</p>
+          </>
+        ) : (
+          <></>
+        )}
         <h1>起空雨傘一覧</h1>
         <Button
           variant="outlined"

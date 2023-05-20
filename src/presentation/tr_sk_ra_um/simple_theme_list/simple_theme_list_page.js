@@ -4,15 +4,29 @@ import { getSkyRainUmbrellaThemeDistinctList } from "../../../api/s_r_u_api_clie
 import { TextField } from "@mui/material";
 import { insertSkyRainUmbrellaTheme } from "../../../api/s_r_u_api_client";
 import { Link, useNavigate } from "react-router-dom";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "../../../firebase";
+
 const SimpleThemeList = () => {
   const [list, setList] = useState([]);
+  const [user, setUser] = useState(null);
   const [newTheme, setNewTheme] = useState("");
   const navigate = useNavigate();
   useEffect(() => {
-    // APIからテーマを取得してstateにセット
-    getSkyRainUmbrellaThemeDistinctList().then((data) => {
-      setList(data);
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user && user.emailVerified) {
+        setUser(user);
+        getSkyRainUmbrellaThemeDistinctList(user.email).then((data) => {
+          setList(data);
+        });
+      } else {
+        setUser(null);
+        getSkyRainUmbrellaThemeDistinctList(null).then((data) => {
+          setList(data);
+        });
+      }
     });
+    return unsubscribe;
   }, []);
 
   const handleSelectTheme = (theme) => {
@@ -26,7 +40,7 @@ const SimpleThemeList = () => {
   const handleSave = async () => {
     // 保存ボタンが押された時の処理を記述
     try {
-      const result = await insertSkyRainUmbrellaTheme(newTheme);
+      const result = await insertSkyRainUmbrellaTheme(newTheme, user.email);
     } catch (error) {
       console.error("保存に失敗しました:", error);
     }
@@ -41,6 +55,13 @@ const SimpleThemeList = () => {
       <Box
         sx={{ display: "flex", flexDirection: "column", alignItems: "left" }}
       >
+        {user && user.emailVerified ? (
+          <>
+            <p>プライベートモード</p>
+          </>
+        ) : (
+          <></>
+        )}
         <Typography variant="h5" gutterBottom>
           新しいテーマ
         </Typography>

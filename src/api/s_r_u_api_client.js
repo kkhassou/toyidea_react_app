@@ -16,11 +16,15 @@ export async function getSkyRainUmbrellaList(theme) {
     throw error;
   }
 }
-export async function getSkyRainUmbrellaThemeDistinctList() {
+export async function getSkyRainUmbrellaThemeDistinctList(email) {
   try {
     const response = await axios.get(
       API_URL + `skyRainUmbrellaThemeDistinctList`,
-      {}
+      {
+        headers: {
+          email: email,
+        },
+      }
     );
     return response.data;
   } catch (error) {
@@ -30,6 +34,7 @@ export async function getSkyRainUmbrellaThemeDistinctList() {
 }
 
 export async function insertSkyRainUmbrella(
+  email,
   theme,
   trigger,
   sky,
@@ -38,6 +43,7 @@ export async function insertSkyRainUmbrella(
 ) {
   try {
     const response = await axios.post(API_URL + `skyRainUmbrellaInput`, {
+      email: email,
       theme: theme,
       trigger: trigger,
       sky: sky,
@@ -51,10 +57,11 @@ export async function insertSkyRainUmbrella(
   }
 }
 
-export async function insertSkyRainUmbrellaTheme(theme) {
+export async function insertSkyRainUmbrellaTheme(theme, email) {
   try {
     const response = await axios.post(API_URL + `skyRainUmbrellaInput`, {
       theme: theme,
+      email: email,
     });
     return response.data;
   } catch (error) {

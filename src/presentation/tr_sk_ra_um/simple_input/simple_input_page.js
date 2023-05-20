@@ -31,14 +31,6 @@ const SimpleInputPage = () => {
   // ランダムに引用を選択
   const selectRandomQuote = () => {
     const keys = Object.keys(CelebrityQuotes);
-    // const quotes = {
-    //   1: {
-    //     名前: "スティーブ・ジョブズ",
-    //     言葉: "唯一、自分自身に従うことができるのは、自分自身の心だけだ。",
-    //   },
-    //   // ... 他の引用
-    // };
-    // const keys = Object.keys(quotes);
     const randomKey = keys[Math.floor(Math.random() * keys.length)];
     setQuote(CelebrityQuotes[randomKey]);
   };
@@ -79,7 +71,7 @@ const SimpleInputPage = () => {
     try {
       const result = await insertSkyRainUmbrella(
         // user.uid,
-        // user.email,
+        user.email,
         theme,
         inputs.trigger,
         inputs.sky,
@@ -143,12 +135,20 @@ const SimpleInputPage = () => {
           onClick={handleBack}
           sx={{
             marginLeft: "20px",
+            marginRight: "20px",
             height: "30px",
             width: "150px",
           }}
         >
           前のページに戻る
         </Button>
+        {user && user.emailVerified ? (
+          <>
+            <p>プライベートモード</p>
+          </>
+        ) : (
+          <></>
+        )}
       </div>
       <div style={{ display: "flex", flexDirection: "column" }}>
         <Typography variant="h6" gutterBottom>

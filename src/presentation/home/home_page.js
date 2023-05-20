@@ -46,7 +46,10 @@ export const HomePage = () => {
         ホーム
       </h1>
       {user && user.emailVerified ? (
-        <button onClick={handleLogout}>ログアウト</button>
+        <>
+          <p>プライベートモード</p>
+          <button onClick={handleLogout}>ログアウト</button>
+        </>
       ) : (
         <>
           <button onClick={goToLogin}>ログイン</button>
