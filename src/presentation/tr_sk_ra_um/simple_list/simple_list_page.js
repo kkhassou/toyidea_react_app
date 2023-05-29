@@ -325,34 +325,37 @@ const SimpleListPage = () => {
           {location.state.theme}
         </Typography>
         <div>
-          {filteredData.map((item) => (
-            <div
-              key={item.id}
-              style={{
-                border: "1px solid black",
-                padding: "10px",
-                margin: "10px",
-              }}
-            >
-              {checkedItems.trigger && <p>起：{item.trigger}</p>}
-              {checkedItems.sky && <p>空：{item.sky}</p>}
-              {checkedItems.rain && <p>雨：{item.rain}</p>}
-              {checkedItems.umbrella && <p>傘：{item.umbrella}</p>}
-              <Box display="flex" alignItems="center">
-                <button onClick={() => handleReconsider(item.id)}>
-                  再考する
-                </button>
-                <IconButton onClick={() => handleClick(item.id)}>
-                  {selected[item.id] ? (
-                    <StarIcon sx={{ color: "#FFD700" }} />
-                  ) : (
-                    <StarOutlinedIcon />
-                  )}
-                </IconButton>
-                <button onClick={() => handleComment(item.id)}>コメント</button>
-              </Box>
-            </div>
-          ))}
+          {filteredData
+            .map((item) => (
+              <div
+                key={item.id}
+                style={{
+                  border: "1px solid black",
+                  padding: "10px",
+                  margin: "10px",
+                }}
+              >
+                {checkedItems.trigger && <p>起：{item.trigger}</p>}
+                {checkedItems.sky && <p>空：{item.sky}</p>}
+                {checkedItems.rain && <p>雨：{item.rain}</p>}
+                {checkedItems.umbrella && <p>傘：{item.umbrella}</p>}
+                <Box display="flex" alignItems="center">
+                  <button onClick={() => handleReconsider(item.id)}>
+                    再考する
+                  </button>
+                  <IconButton onClick={() => handleClick(item.id)}>
+                    {selected[item.id] ? (
+                      <StarIcon sx={{ color: "#FFD700" }} />
+                    ) : (
+                      <StarOutlinedIcon />
+                    )}
+                  </IconButton>
+                  <button onClick={() => handleComment(item.id)}>
+                    コメント
+                  </button>
+                </Box>
+              </div>
+            ))}
         </div>
       </div>
     </div>

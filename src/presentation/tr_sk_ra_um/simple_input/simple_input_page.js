@@ -68,10 +68,15 @@ const SimpleInputPage = () => {
 
   const handleSave = async () => {
     // 保存ボタンが押された時の処理を記述
+    var email;
+    if (user && user.emailVerified) {
+      email = user.email;
+    } else {
+      email = null;
+    }
     try {
       const result = await insertSkyRainUmbrella(
-        // user.uid,
-        user.email,
+        email,
         theme,
         inputs.trigger,
         inputs.sky,
@@ -167,7 +172,6 @@ const SimpleInputPage = () => {
             onChange={handleChange}
             multiline
             inputProps={{
-              maxLength: 30,
               style: { whiteSpace: "pre-wrap", wordWrap: "break-word" },
               wrap: "soft",
             }}

@@ -5,9 +5,17 @@ import { auth } from "../../firebase";
 import face_kakegawa from "../../assets/images/face_kakegawa.jpg";
 import { Link, useNavigate } from "react-router-dom";
 import { TextField, Button, Select, MenuItem } from "@mui/material";
+import axios from "axios";
+
 export const HomePage = () => {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
+  const [model, setModel] = useState(
+    // "text-davinci-002"
+    // "gpt-3.5-turbo"
+    "text-davinci-003"
+  );
+  const [response, setResponse] = useState("");
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -84,6 +92,15 @@ export const HomePage = () => {
             }
           >
             イノベーション①はじめる
+          </Button>
+          <div style={{ height: "10px" }}></div>
+          <Button
+            sx={{ minWidth: "220px", maxWidth: "220px" }}
+            variant="outlined"
+            name="sky"
+            onClick={() => navigate("/chatgpt", { state: {} })}
+          >
+            Chatgptはじめる
           </Button>
         </div>
       </div>

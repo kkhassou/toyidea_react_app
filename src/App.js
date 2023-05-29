@@ -14,6 +14,7 @@ import SimpleListCommentPage from "./presentation/tr_sk_ra_um/simple_list/simple
 import SimpleThemeList from "./presentation/tr_sk_ra_um/simple_theme_list/simple_theme_list_page";
 import SimpleFirstStepPage from "./presentation/5w1h_inovation/simple/simple_first_step_page";
 import SimpleSecondStepPage from "./presentation/5w1h_inovation/simple/simple_second_step_page";
+import ChatgptPage from "./presentation/chatgpt/chatgpt_page";
 function App() {
   return (
     <Router>
@@ -41,6 +42,7 @@ function App() {
           path="/5w1h_inovation/simple/second_step"
           element={<SimpleSecondStepPage />}
         />
+        <Route path="/chatgpt" element={<ChatgptPage />} />
       </Routes>
     </Router>
   );
